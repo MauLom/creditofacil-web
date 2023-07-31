@@ -21,13 +21,20 @@ export default function Layout() {
         userName: "Andres",
     }
 
+    const sell_options =[
+        {text: "Payjoy"},
+        {text: "Celulares credito facil"},
+        {text: "Accesorios"},
+        {text: "Reparaciones"},
+        {text: "Otros"}
+    ]
     function close() {
         setOpenDoSellModal(false);
     }
 
     const now = new Date()
     const override_buttonsSize = {
-        BaseButton: { style: { width: "50%" } }
+        BaseButton: { style: { width: "50%", margin:"3px" } }
     }
 
     return (
@@ -60,26 +67,17 @@ export default function Layout() {
                 </Card>
             </Cell>
             <Modal onClose={close} isOpen={openDoSellModal}>
-                <ModalHeader>Hello world</ModalHeader>
+                <ModalHeader> Selecciona una opcion para agregar a la venta :</ModalHeader>
                 <ModalBody>
-                    Selecciona una opcion para agregar a la venta :
-                    {/* <ButtonGroup> */}
-                    <br />
-                    <Button kind="secondary" overrides={override_buttonsSize}>Payjoy</Button>
-                    <br />
-                    <Button kind="secondary" overrides={override_buttonsSize}>Celulares credito facil</Button>
-                    <br />
-                    <Button kind="secondary" overrides={override_buttonsSize}>Accesorios</Button>
-                    <br />
-                    <Button kind="secondary" overrides={override_buttonsSize}>Reparaciones</Button>
-                    <br />
-                    <Button kind="secondary" overrides={override_buttonsSize}>Otro</Button>
-                    {/* </ButtonGroup> */}
-
+                    {sell_options.map(eachOption => (
+                        <Button key={`button-${eachOption.text}`} kind="secondary" overrides={override_buttonsSize}>
+                            {eachOption.text}
+                        </Button>
+                    ))}
                 </ModalBody>
                 <ModalFooter>
                     <ModalButton kind="tertiary" onClick={close}>
-                        Cancel
+                        Ir atras
                     </ModalButton>
                     {/* <ModalButton onClick={close}>Okay</ModalButton> */}
                 </ModalFooter>
