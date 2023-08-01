@@ -4,7 +4,7 @@ import { FormControl } from "baseui/form-control";
 import { Input } from "baseui/input";
 import { HeadingXSmall, LabelXSmall } from "baseui/typography";
 import { Select, Value } from "baseui/select";
-export default function PayjoyForm() {
+export default function FoxpayForm() {
     const [value, setValue] = React.useState<Value>([]);
 
     const doSubmit = (e) => {
@@ -14,7 +14,7 @@ export default function PayjoyForm() {
 
     return (
         <>
-            <HeadingXSmall>Agregar pago Payjoy</HeadingXSmall>
+            <HeadingXSmall>Agregar pago Foxpay</HeadingXSmall>
             <LabelXSmall>Tipo </LabelXSmall>
             <Select
                 options={[
@@ -29,10 +29,10 @@ export default function PayjoyForm() {
             <form onSubmit={(event) => doSubmit(event)}>
 
                 <FormControl
-                    label={() => "Tag"}
+                    label={() => "Referencia"}
                     caption={() => "*Obligatorio"}
                 >
-                    <Input name="tag" />
+                    <Input name="ref" />
                 </FormControl>
                 <FormControl
                     label={() => "IMEI"}

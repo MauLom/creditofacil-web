@@ -15,6 +15,11 @@ import {
 
 import {Drawer} from 'baseui/drawer';
 import PayjoyForm from "../../pages/forms/payjoy";
+import FoxpayForm from "../../pages/forms/foxpay";
+import CreditoFacilForm from "../../pages/forms/creditofacil";
+import AccesoriosForm from "../../pages/forms/accesorios";
+import OtroForm from "../../pages/forms/otro";
+import ReparacionesForm from "../../pages/forms/reparaciones";
 export default function Layout() {
     const [openDoSellModal, setOpenDoSellModal] = React.useState(false)
     const [isOpenDrawer, setIsOpenDrawer] = React.useState(false)
@@ -26,10 +31,11 @@ export default function Layout() {
 
     const sell_options = [
         { text: "Payjoy", module: <PayjoyForm /> },
-        { text: "Celulares credito facil" },
-        { text: "Accesorios" },
-        { text: "Reparaciones" },
-        { text: "Otros" }
+        { text: "Fox pay", module: <FoxpayForm /> },
+        { text: "Celulares credito facil", module: <CreditoFacilForm /> },
+        { text: "Accesorios", module: <AccesoriosForm /> },
+        { text: "Reparaciones", module:<ReparacionesForm />  },
+        { text: "Otros", module: <OtroForm /> }
     ]
     function close() {
         setOpenDoSellModal(false);
@@ -81,7 +87,7 @@ export default function Layout() {
                 </Card>
             </Cell>
             <Modal onClose={close} isOpen={openDoSellModal}>
-                <ModalHeader> Selecciona una opcion para agregar a la venta :</ModalHeader>
+                <ModalHeader> Selecciona una opcion para agregar a la venta</ModalHeader>
                 <ModalBody>
                     {sell_options.map(eachOption => (
                         <Button key={`button-${eachOption.text}`} kind="secondary" overrides={override_buttonsSize} onClick={()=>renderForm(eachOption.module)}>

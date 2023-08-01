@@ -4,8 +4,10 @@ import { FormControl } from "baseui/form-control";
 import { Input } from "baseui/input";
 import { HeadingXSmall, LabelXSmall } from "baseui/typography";
 import { Select, Value } from "baseui/select";
-export default function PayjoyForm() {
+export default function ReparacionesForm() {
     const [value, setValue] = React.useState<Value>([]);
+    const [valueFixer, setValueFixer] = React.useState<Value>([]);
+
 
     const doSubmit = (e) => {
         e.preventDefault()
@@ -14,12 +16,12 @@ export default function PayjoyForm() {
 
     return (
         <>
-            <HeadingXSmall>Agregar pago Payjoy</HeadingXSmall>
+            <HeadingXSmall>Agregar pago Reparaciones</HeadingXSmall>
             <LabelXSmall>Tipo </LabelXSmall>
             <Select
                 options={[
-                    { id: 'Enganche', color: '#F0F8FF' },
-                    { id: 'Parcialidad', color: '#FAEBD7' },
+                    { id: 'Hardware', color: '#F0F8FF' },
+                    { id: 'Software', color: '#FAEBD7' },
                 ]}
                 labelKey="id"
                 valueKey="color"
@@ -49,6 +51,19 @@ export default function PayjoyForm() {
                         startEnhancer="$"
                     />
                 </FormControl>
+
+                <LabelXSmall>Tecnico Encargado </LabelXSmall>
+                <Select
+                    options={[
+                        { id: 'Jeho', color: '#F0F8FF' },
+                        { id: 'Bicri', color: '#FAEBD7' },
+                    ]}
+                    labelKey="id"
+                    valueKey="color"
+                    onChange={({ value }) => setValue(value)}
+                    value={value}
+                />
+
                 <Button type="submit">
                     Agregar
                 </Button>
@@ -56,6 +71,7 @@ export default function PayjoyForm() {
                     Regresar
                 </Button>
             </form>
+
         </>
     )
 }

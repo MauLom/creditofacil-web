@@ -2,10 +2,8 @@ import React from "react";
 import { Button } from "baseui/button";
 import { FormControl } from "baseui/form-control";
 import { Input } from "baseui/input";
-import { HeadingXSmall, LabelXSmall } from "baseui/typography";
-import { Select, Value } from "baseui/select";
-export default function PayjoyForm() {
-    const [value, setValue] = React.useState<Value>([]);
+import { HeadingXSmall } from "baseui/typography";
+export default function AccesoriosForm() {
 
     const doSubmit = (e) => {
         e.preventDefault()
@@ -14,31 +12,14 @@ export default function PayjoyForm() {
 
     return (
         <>
-            <HeadingXSmall>Agregar pago Payjoy</HeadingXSmall>
-            <LabelXSmall>Tipo </LabelXSmall>
-            <Select
-                options={[
-                    { id: 'Enganche', color: '#F0F8FF' },
-                    { id: 'Parcialidad', color: '#FAEBD7' },
-                ]}
-                labelKey="id"
-                valueKey="color"
-                onChange={({ value }) => setValue(value)}
-                value={value}
-            />
+            <HeadingXSmall>Agregar pago Accesorios</HeadingXSmall>
             <form onSubmit={(event) => doSubmit(event)}>
 
                 <FormControl
-                    label={() => "Tag"}
+                    label={() => "Concepto"}
                     caption={() => "*Obligatorio"}
                 >
-                    <Input name="tag" />
-                </FormControl>
-                <FormControl
-                    label={() => "IMEI"}
-                    caption={() => ""}
-                >
-                    <Input name="imei" />
+                    <Input name="concept" />
                 </FormControl>
                 <FormControl
                     label={() => "Monto"}
