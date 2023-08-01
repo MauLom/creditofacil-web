@@ -24,6 +24,7 @@ export default function Layout() {
     const [openDoSellModal, setOpenDoSellModal] = React.useState(false)
     const [isOpenDrawer, setIsOpenDrawer] = React.useState(false)
     const [formToBeRendered, setFormToBeRendered] = React.useState()
+    const [moment, setMoment] = React.useState<Date>()
     const CRUDE_OBJ = {
         venue: "Arteaga",
         userName: "Andres",
@@ -49,10 +50,18 @@ export default function Layout() {
         setFormToBeRendered(module)
     }   
 
-    const now = new Date()
     const override_buttonsSize = {
         BaseButton: { style: { width: "50%", margin: "3px" } }
     }
+    React.useEffect(()=>{
+        // setMoment(new Date())
+        const interval = setInterval(() => {
+            setMoment(new Date());
+          }, 1000);
+      
+          return () => clearInterval(interval);
+    
+    }, [])
 
     return (
         <Grid>
@@ -67,7 +76,8 @@ export default function Layout() {
             </Cell>
             <Cell gridColumns={2} >
                 <Card>
-                    {now.toLocaleDateString()}
+                    {`${moment?.toLocaleDateString()}-${moment?.toLocaleTimeString()}`}
+                    
                 </Card>
             </Cell>
             <Cell gridColumns={1}>
