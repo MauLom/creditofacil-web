@@ -13,14 +13,15 @@ import {
     ModalButton,
 } from 'baseui/modal';
 
-import {Drawer} from 'baseui/drawer';
+import { Drawer } from 'baseui/drawer';
 import PayjoyForm from "../../pages/forms/payjoy";
 import FoxpayForm from "../../pages/forms/foxpay";
 import CreditoFacilForm from "../../pages/forms/creditofacil";
 import AccesoriosForm from "../../pages/forms/accesorios";
 import OtroForm from "../../pages/forms/otro";
 import ReparacionesForm from "../../pages/forms/reparaciones";
-export default function Layout() {
+
+export default function Layout({changeSpinner}) {
     const [openDoSellModal, setOpenDoSellModal] = React.useState(false)
     const [isOpenDrawer, setIsOpenDrawer] = React.useState(false)
     const [formToBeRendered, setFormToBeRendered] = React.useState()
@@ -35,7 +36,7 @@ export default function Layout() {
         { text: "Fox pay", module: <FoxpayForm /> },
         { text: "Celulares credito facil", module: <CreditoFacilForm /> },
         { text: "Accesorios", module: <AccesoriosForm /> },
-        { text: "Reparaciones", module:<ReparacionesForm />  },
+        { text: "Reparaciones", module: <ReparacionesForm /> },
         { text: "Otros", module: <OtroForm /> }
     ]
     function close() {
@@ -48,20 +49,25 @@ export default function Layout() {
     function renderForm(module) {
         setIsOpenDrawer(true)
         setFormToBeRendered(module)
-    }   
+    }
 
     const override_buttonsSize = {
         BaseButton: { style: { width: "50%", margin: "3px" } }
     }
-    React.useEffect(()=>{
+
+    React.useEffect(() => {
         // setMoment(new Date())
         const interval = setInterval(() => {
             setMoment(new Date());
-          }, 1000);
-      
-          return () => clearInterval(interval);
-    
+        }, 1000);
+
+        return () => clearInterval(interval);
+
     }, [])
+
+    React.useEffect(()=>{
+        moment == undefined? changeSpinner(true) : changeSpinner(false)
+    }, [moment, changeSpinner])
 
     return (
         <Grid>
@@ -77,7 +83,7 @@ export default function Layout() {
             <Cell gridColumns={2} >
                 <Card>
                     {`${moment?.toLocaleDateString()}-${moment?.toLocaleTimeString()}`}
-                    
+
                 </Card>
             </Cell>
             <Cell gridColumns={1}>
@@ -87,7 +93,7 @@ export default function Layout() {
                 <Button>
                     {`${dictionary.see_sales}`}
                 </Button>
-                <Button onClick={()=> setIsOpenDrawer(true)}>
+                <Button onClick={() => setIsOpenDrawer(true)}>
                     {`${dictionary.cash_out}`}
                 </Button>
             </Cell>
@@ -100,7 +106,7 @@ export default function Layout() {
                 <ModalHeader> Selecciona una opcion para agregar a la venta</ModalHeader>
                 <ModalBody>
                     {sell_options.map(eachOption => (
-                        <Button key={`button-${eachOption.text}`} kind="secondary" overrides={override_buttonsSize} onClick={()=>renderForm(eachOption.module)}>
+                        <Button key={`button-${eachOption.text}`} kind="secondary" overrides={override_buttonsSize} onClick={() => renderForm(eachOption.module)}>
                             {eachOption.text}
                         </Button>
                     ))}
