@@ -2,7 +2,7 @@ import React from "react"
 import { HeadingXSmall, LabelLarge, LabelSmall } from "baseui/typography"
 import dictionary from "./dictionary.json"
 import { Grid, Cell } from "baseui/layout-grid"
-
+import { Block } from "baseui/block";
 import { Card } from "baseui/card";
 import { Button } from "baseui/button";
 import {
@@ -12,7 +12,7 @@ import {
     ModalFooter,
     ModalButton,
 } from 'baseui/modal';
-
+import { Table } from 'baseui/table';
 import { Drawer } from 'baseui/drawer';
 import PayjoyForm from "../../pages/forms/payjoy";
 import FoxpayForm from "../../pages/forms/foxpay";
@@ -20,12 +20,14 @@ import CreditoFacilForm from "../../pages/forms/creditofacil";
 import AccesoriosForm from "../../pages/forms/accesorios";
 import OtroForm from "../../pages/forms/otro";
 import ReparacionesForm from "../../pages/forms/reparaciones";
+import { TicketContext } from "../../context/ticketContext";
 
-export default function Layout({changeSpinner}) {
+export default function Layout({ changeSpinner }) {
     const [openDoSellModal, setOpenDoSellModal] = React.useState(false)
     const [isOpenDrawer, setIsOpenDrawer] = React.useState(false)
     const [formToBeRendered, setFormToBeRendered] = React.useState()
     const [moment, setMoment] = React.useState<Date>()
+    const ticketsContext = React.useContext(TicketContext)
     const CRUDE_OBJ = {
         venue: "Arteaga",
         userName: "Andres",
@@ -39,6 +41,14 @@ export default function Layout({changeSpinner}) {
         { text: "Reparaciones", module: <ReparacionesForm /> },
         { text: "Otros", module: <OtroForm /> }
     ]
+
+    // const DATA = [
+    //     ['Sarah Brown', 31, '100 Broadway st. New York City, New York'],
+    //     ['Jane Smith', 32, '100 Market st. San Francisco, California'],
+    //     ['Joe Black', 33, '100 Macquarie st. Sydney, Australia'],
+    //   ];
+    const COLUMNS = ['Tipo venta', 'Monto', 'Ref/Tag/Concepto', 'Acciones'];
+
     function close() {
         setOpenDoSellModal(false);
     }
@@ -56,7 +66,6 @@ export default function Layout({changeSpinner}) {
     }
 
     React.useEffect(() => {
-        // setMoment(new Date())
         const interval = setInterval(() => {
             setMoment(new Date());
         }, 1000);
@@ -65,8 +74,8 @@ export default function Layout({changeSpinner}) {
 
     }, [])
 
-    React.useEffect(()=>{
-        moment == undefined? changeSpinner(true) : changeSpinner(false)
+    React.useEffect(() => {
+        moment == undefined ? changeSpinner(true) : changeSpinner(false)
     }, [moment, changeSpinner])
 
     return (
@@ -93,18 +102,21 @@ export default function Layout({changeSpinner}) {
                 <Button>
                     {`${dictionary.see_sales}`}
                 </Button>
-                <Button onClick={() => setIsOpenDrawer(true)}>
+                <Button>
                     {`${dictionary.cash_out}`}
                 </Button>
             </Cell>
             <Cell gridColumns={1}>
-                <Card>
-                    Espacio de previsualizacion de items
-                </Card>
+                <Block style={{margin:"2% 0 2% 0"}}>
+                    <Card>
+                        <Table columns={COLUMNS} data={[]} />
+                    </Card>
+                </Block>
+
             </Cell>
             <Modal onClose={close} isOpen={openDoSellModal}>
                 <ModalHeader> Selecciona una opcion para agregar a la venta</ModalHeader>
-                <ModalBody>
+                <ModalBody style={{ textAlign: "center" }}>
                     {sell_options.map(eachOption => (
                         <Button key={`button-${eachOption.text}`} kind="secondary" overrides={override_buttonsSize} onClick={() => renderForm(eachOption.module)}>
                             {eachOption.text}
