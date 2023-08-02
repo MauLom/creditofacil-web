@@ -60,8 +60,8 @@ export default function ReparacionesForm() {
                     ]}
                     labelKey="id"
                     valueKey="color"
-                    onChange={({ value }) => setValue(value)}
-                    value={value}
+                    onChange={({ value}) => setValueFixer(value)}
+                    value={valueFixer}
                 />
 
                 <Button type="submit">
