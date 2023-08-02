@@ -17,6 +17,7 @@ const TicketProvider: React.FC<Props> = ({ children }) => {
             detail: ticket.detail,
         };
         setTicket([...tickets, newTicket]);
+        console.log("Ticket saved!")
     };
     // const updateTicket = (id_string: string, ticket: ITickets) => {
     //     tickets.filter((ticket: ITickets) => {

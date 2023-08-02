@@ -4,12 +4,25 @@ import { FormControl } from "baseui/form-control";
 import { Input } from "baseui/input";
 import { HeadingXSmall, LabelXSmall } from "baseui/typography";
 import { Select, Value } from "baseui/select";
+import { TicketContext } from "../../context/ticketContext";
+import { ITickets } from "../../@types/ticket";
 export default function CreditoFacilForm() {
     const [value, setValue] = React.useState<Value>([]);
+    const ticketContext = React.useContext(TicketContext)
 
     const doSubmit = (e) => {
         e.preventDefault()
-        console.log("Submitted: ", e.target["imei"].value)
+        const newTicket: ITickets ={
+            id_string: e.target["ref"].value,
+            type: `Credito facil-(${value[0].id})`,
+            amount: e.target["amount"].value,
+            detail:{
+                ref: e.target["ref"].value,
+                imei: e.target["imei"].value,
+                amount:e.target["amount"].value
+            }
+        }
+        ticketContext.saveTicket(newTicket)
     }
 
     return (

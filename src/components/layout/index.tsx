@@ -4,7 +4,7 @@ import dictionary from "./dictionary.json"
 import { Grid, Cell } from "baseui/layout-grid"
 import { Block } from "baseui/block";
 import { Card } from "baseui/card";
-import { Button } from "baseui/button";
+import { Button, SHAPE } from "baseui/button";
 import {
     Modal,
     ModalHeader,
@@ -21,12 +21,15 @@ import AccesoriosForm from "../../pages/forms/accesorios";
 import OtroForm from "../../pages/forms/otro";
 import ReparacionesForm from "../../pages/forms/reparaciones";
 import { TicketContext } from "../../context/ticketContext";
+import { ButtonGroup } from "baseui/button-group";
+import { Delete, Search } from "baseui/icon";
 
 export default function Layout({ changeSpinner }) {
     const [openDoSellModal, setOpenDoSellModal] = React.useState(false)
     const [isOpenDrawer, setIsOpenDrawer] = React.useState(false)
     const [formToBeRendered, setFormToBeRendered] = React.useState()
     const [moment, setMoment] = React.useState<Date>()
+    const [dataTable, setDataTable] = React.useState([])
     const ticketsContext = React.useContext(TicketContext)
     const CRUDE_OBJ = {
         venue: "Arteaga",
@@ -47,6 +50,8 @@ export default function Layout({ changeSpinner }) {
     //     ['Jane Smith', 32, '100 Market st. San Francisco, California'],
     //     ['Joe Black', 33, '100 Macquarie st. Sydney, Australia'],
     //   ];
+
+
     const COLUMNS = ['Tipo venta', 'Monto', 'Ref/Tag/Concepto', 'Acciones'];
 
     function close() {
@@ -55,12 +60,10 @@ export default function Layout({ changeSpinner }) {
     function closeDrawer() {
         setIsOpenDrawer(false);
     }
-
     function renderForm(module) {
         setIsOpenDrawer(true)
         setFormToBeRendered(module)
     }
-
     const override_buttonsSize = {
         BaseButton: { style: { width: "50%", margin: "3px" } }
     }
@@ -77,6 +80,28 @@ export default function Layout({ changeSpinner }) {
     React.useEffect(() => {
         moment == undefined ? changeSpinner(true) : changeSpinner(false)
     }, [moment, changeSpinner])
+
+    React.useEffect(() => {
+        let newTicketsReadables = []
+        ticketsContext.tickets.forEach(eachTicket => {
+            let readableTicket = []
+            readableTicket.push(eachTicket.type)
+            readableTicket.push(eachTicket.amount)
+            readableTicket.push(eachTicket.id_string)
+            readableTicket.push(
+                <ButtonGroup>
+                    <Button shape={SHAPE.circle}>
+                        <Delete />
+                    </Button>
+                    <Button shape={SHAPE.circle}>
+                        <Search />
+                    </Button>
+                </ButtonGroup>
+            )
+            newTicketsReadables.push(readableTicket)
+        })
+        setDataTable(newTicketsReadables)
+    }, [ticketsContext.tickets, setDataTable])
 
     return (
         <Grid>
@@ -111,7 +136,7 @@ export default function Layout({ changeSpinner }) {
             <Cell gridColumns={1}>
                 <Block style={{ margin: "2% 0 2% 0" }}>
                     <Card>
-                        <Table columns={COLUMNS} data={[]} />
+                        <Table columns={COLUMNS} data={dataTable} />
                     </Card>
                 </Block>
             </Cell>
@@ -123,10 +148,13 @@ export default function Layout({ changeSpinner }) {
                 </Block>
 
             </Cell>
-            <Cell gridColumns={6}>
-                <Block>
+            <Cell gridColumns={2}>
+                <Block style={{display:"flex", justifyContent:"space-around"}}>
                     <Button disabled>
                         Cobrar
+                    </Button>
+                    <Button disabled>
+                        Vaciar
                     </Button>
                 </Block>
             </Cell>
