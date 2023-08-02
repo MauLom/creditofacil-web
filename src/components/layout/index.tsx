@@ -96,24 +96,54 @@ export default function Layout({ changeSpinner }) {
                 </Card>
             </Cell>
             <Cell gridColumns={1}>
-                <Button onClick={() => setOpenDoSellModal(true)}>
-                    {`${dictionary.do_sell}`}
-                </Button>
-                <Button>
-                    {`${dictionary.see_sales}`}
-                </Button>
-                <Button>
-                    {`${dictionary.cash_out}`}
-                </Button>
+                <Block style={{ display: "flex", justifyContent: "space-around", margin: "2% 0 0 0" }}>
+                    <Button onClick={() => setOpenDoSellModal(true)}>
+                        {`${dictionary.do_sell}`}
+                    </Button>
+                    <Button disabled>
+                        {`${dictionary.see_sales}`}
+                    </Button>
+                    <Button disabled>
+                        {`${dictionary.cash_out}`}
+                    </Button>
+                </Block>
             </Cell>
             <Cell gridColumns={1}>
-                <Block style={{margin:"2% 0 2% 0"}}>
+                <Block style={{ margin: "2% 0 2% 0" }}>
                     <Card>
                         <Table columns={COLUMNS} data={[]} />
                     </Card>
                 </Block>
+            </Cell>
+            <Cell gridColumns={2}>
+                <Block>
+                    <Card>
+                        Total:
+                    </Card>
+                </Block>
 
             </Cell>
+            <Cell gridColumns={6}>
+                <Block>
+                    <Button disabled>
+                        Cobrar
+                    </Button>
+                </Block>
+            </Cell>
+            <Cell gridColumns={1}>
+                <Block>
+                    <Button disabled>
+                        Hacer corte
+                    </Button>
+                </Block>
+                <Block>
+                    <Button disabled>
+                        Ver corte
+                    </Button>
+                </Block>
+            </Cell>
+
+
             <Modal onClose={close} isOpen={openDoSellModal}>
                 <ModalHeader> Selecciona una opcion para agregar a la venta</ModalHeader>
                 <ModalBody style={{ textAlign: "center" }}>
