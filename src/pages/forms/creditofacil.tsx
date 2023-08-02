@@ -6,7 +6,7 @@ import { HeadingXSmall, LabelXSmall } from "baseui/typography";
 import { Select, Value } from "baseui/select";
 import { TicketContext } from "../../context/ticketContext";
 import { ITickets } from "../../@types/ticket";
-export default function CreditoFacilForm() {
+export default function CreditoFacilForm({doClose}) {
     const [value, setValue] = React.useState<Value>([]);
     const ticketContext = React.useContext(TicketContext)
 
@@ -23,6 +23,7 @@ export default function CreditoFacilForm() {
             }
         }
         ticketContext.saveTicket(newTicket)
+        doClose()
     }
 
     return (

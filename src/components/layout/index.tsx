@@ -30,6 +30,7 @@ export default function Layout({ changeSpinner }) {
     const [formToBeRendered, setFormToBeRendered] = React.useState()
     const [moment, setMoment] = React.useState<Date>()
     const [dataTable, setDataTable] = React.useState([])
+    const [total, setTotal]= React.useState(0)
     const ticketsContext = React.useContext(TicketContext)
     const CRUDE_OBJ = {
         venue: "Arteaga",
@@ -37,19 +38,13 @@ export default function Layout({ changeSpinner }) {
     }
 
     const sell_options = [
-        { text: "Payjoy", module: <PayjoyForm /> },
-        { text: "Fox pay", module: <FoxpayForm /> },
-        { text: "Celulares credito facil", module: <CreditoFacilForm /> },
-        { text: "Accesorios", module: <AccesoriosForm /> },
-        { text: "Reparaciones", module: <ReparacionesForm /> },
-        { text: "Otros", module: <OtroForm /> }
+        { text: "Payjoy", module: <PayjoyForm doClose={closeDrawer} /> },
+        { text: "Fox pay", module: <FoxpayForm doClose={closeDrawer} /> },
+        { text: "Celulares credito facil", module: <CreditoFacilForm doClose={closeDrawer} /> },
+        { text: "Accesorios", module: <AccesoriosForm doClose={closeDrawer} /> },
+        { text: "Reparaciones", module: <ReparacionesForm doClose={closeDrawer} /> },
+        { text: "Otros", module: <OtroForm doClose={closeDrawer} /> }
     ]
-
-    // const DATA = [
-    //     ['Sarah Brown', 31, '100 Broadway st. New York City, New York'],
-    //     ['Jane Smith', 32, '100 Market st. San Francisco, California'],
-    //     ['Joe Black', 33, '100 Macquarie st. Sydney, Australia'],
-    //   ];
 
 
     const COLUMNS = ['Tipo venta', 'Monto', 'Ref/Tag/Concepto', 'Acciones'];
@@ -68,6 +63,7 @@ export default function Layout({ changeSpinner }) {
         BaseButton: { style: { width: "50%", margin: "3px" } }
     }
 
+
     React.useEffect(() => {
         const interval = setInterval(() => {
             setMoment(new Date());
@@ -82,26 +78,57 @@ export default function Layout({ changeSpinner }) {
     }, [moment, changeSpinner])
 
     React.useEffect(() => {
+
+        const doUpdate = () => {
+            let newTicketsReadables = []
+            ticketsContext.tickets.forEach((eachTicket, idx) => {
+                let readableTicket = []
+                readableTicket.push(eachTicket.type)
+                readableTicket.push(eachTicket.amount)
+                readableTicket.push(eachTicket.id_string)
+                readableTicket.push(
+                    <ButtonGroup>
+                        <Button shape={SHAPE.circle} onClick={(e) => doDelete(idx)}>
+                            <Delete />
+                        </Button>
+                        <Button shape={SHAPE.circle}>
+                            <Search />
+                        </Button>
+                    </ButtonGroup>
+                )
+                newTicketsReadables.push(readableTicket)
+            })
+            setDataTable(newTicketsReadables)
+        }
+
+        const doDelete = (elementToBeDeletedIdx) => {
+            ticketsContext.deleteTicket(ticketsContext.tickets[elementToBeDeletedIdx])
+            doUpdate()
+        }
         let newTicketsReadables = []
-        ticketsContext.tickets.forEach(eachTicket => {
+        let newCalc = 0
+        ticketsContext.tickets.forEach((eachTicket, idx) => {
             let readableTicket = []
             readableTicket.push(eachTicket.type)
             readableTicket.push(eachTicket.amount)
             readableTicket.push(eachTicket.id_string)
             readableTicket.push(
                 <ButtonGroup>
-                    <Button shape={SHAPE.circle}>
+                    <Button shape={SHAPE.circle} onClick={(e) => doDelete(idx)}>
                         <Delete />
                     </Button>
-                    <Button shape={SHAPE.circle}>
+                    <Button shape={SHAPE.circle} disabled>
                         <Search />
                     </Button>
                 </ButtonGroup>
             )
             newTicketsReadables.push(readableTicket)
+
+            newCalc = newCalc + Number.parseInt(eachTicket.amount)
         })
         setDataTable(newTicketsReadables)
-    }, [ticketsContext.tickets, setDataTable])
+        setTotal(newCalc)
+    }, [ticketsContext, dataTable])
 
     return (
         <Grid>
@@ -143,13 +170,13 @@ export default function Layout({ changeSpinner }) {
             <Cell gridColumns={2}>
                 <Block>
                     <Card>
-                        Total:
+                        {`Total: ${total}`}
                     </Card>
                 </Block>
 
             </Cell>
             <Cell gridColumns={2}>
-                <Block style={{display:"flex", justifyContent:"space-around"}}>
+                <Block style={{ display: "flex", justifyContent: "space-around" }}>
                     <Button disabled>
                         Cobrar
                     </Button>

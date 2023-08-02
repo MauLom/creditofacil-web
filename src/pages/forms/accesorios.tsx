@@ -5,11 +5,11 @@ import { Input } from "baseui/input";
 import { HeadingXSmall } from "baseui/typography";
 import { TicketContext } from "../../context/ticketContext";
 import { ITickets } from "../../@types/ticket";
-export default function AccesoriosForm() {
+export default function AccesoriosForm({doClose}) {
     const ticketContext = React.useContext(TicketContext)
     const doSubmit = (e) => {
         e.preventDefault()
-        const newTicket: ITickets ={
+    const newTicket: ITickets ={
             id_string: e.target["concept"].value,
             type: `Accesorio(s)`,
             amount: e.target["amount"].value,
@@ -19,6 +19,7 @@ export default function AccesoriosForm() {
             }
         }
         ticketContext.saveTicket(newTicket)
+        doClose()
     }
 
     return (

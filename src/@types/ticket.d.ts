@@ -7,5 +7,6 @@ export interface ITickets {
   export type TicketsContextType = {
     tickets: ITickets[];
     saveTicket: (ticket: ITickets) => void;
+    deleteTicket: (ticket: ITickets) => void;
     // updateTicket: (id_string?: string, type?: string, amount?:string, detail?: object) => void;
   };

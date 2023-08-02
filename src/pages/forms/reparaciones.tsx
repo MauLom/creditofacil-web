@@ -6,7 +6,7 @@ import { HeadingXSmall, LabelXSmall } from "baseui/typography";
 import { Select, Value } from "baseui/select";
 import { TicketContext } from "../../context/ticketContext";
 import { ITickets } from "../../@types/ticket";
-export default function ReparacionesForm() {
+export default function ReparacionesForm({doClose}) {
     const [value, setValue] = React.useState<Value>([]);
     const [valueFixer, setValueFixer] = React.useState<Value>([]);
     const ticketContext = React.useContext(TicketContext)
@@ -25,6 +25,7 @@ export default function ReparacionesForm() {
             }
         }
         ticketContext.saveTicket(newTicket)
+        doClose()
     }
 
     return (

@@ -6,7 +6,7 @@ import { HeadingXSmall, LabelXSmall } from "baseui/typography";
 import { Select, Value } from "baseui/select";
 import { TicketContext } from "../../context/ticketContext";
 import { ITickets } from "../../@types/ticket";
-export default function PayjoyForm() {
+export default function PayjoyForm({doClose}) {
     const [value, setValue] = React.useState<Value>([]);
     const ticketContext = React.useContext(TicketContext)
     const doSubmit = (e) => {
@@ -22,6 +22,7 @@ export default function PayjoyForm() {
             }
         }
         ticketContext.saveTicket(newTicket)
+        doClose()
     }
 
     return (

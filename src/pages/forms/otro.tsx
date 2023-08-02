@@ -5,13 +5,13 @@ import { Input } from "baseui/input";
 import { HeadingXSmall } from "baseui/typography";
 import { TicketContext } from "../../context/ticketContext";
 import { ITickets } from "../../@types/ticket";
-export default function OtroForm() {
+export default function OtroForm({doClose}) {
     const ticketContext = React.useContext(TicketContext)
     const doSubmit = (e) => {
         e.preventDefault()
         const newTicket: ITickets = {
             id_string: e.target["concept"].value,
-            type: `Otro)`,
+            type: `Otro`,
             amount: e.target["amount"].value,
             detail: {
                 concept: e.target["concept"].value,
@@ -19,6 +19,7 @@ export default function OtroForm() {
             }
         }
         ticketContext.saveTicket(newTicket)
+        doClose()
     }
 
     return (

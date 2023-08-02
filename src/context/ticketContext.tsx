@@ -28,7 +28,11 @@ const TicketProvider: React.FC<Props> = ({ children }) => {
     //         }
     //     });
     // };
-    return <TicketContext.Provider value={{ tickets, saveTicket }}>{children}</TicketContext.Provider>;
+    const deleteTicket = (ticket: ITickets) => {
+        const idxToBeDeleted = tickets.findIndex(((obj) => obj.id_string === ticket.id_string))
+        tickets.splice(idxToBeDeleted, 1)
+    }
+    return <TicketContext.Provider value={{ tickets, saveTicket, deleteTicket }}>{children}</TicketContext.Provider>;
 };
 
 export default TicketProvider;
