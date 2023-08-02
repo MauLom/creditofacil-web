@@ -33,9 +33,6 @@ export default function AccesoriosForm() {
                 <Button type="submit">
                     Agregar
                 </Button>
-                <Button kind="secondary">
-                    Regresar
-                </Button>
             </form>
         </>
     )

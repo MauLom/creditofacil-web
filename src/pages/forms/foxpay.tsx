@@ -52,9 +52,7 @@ export default function FoxpayForm() {
                 <Button type="submit">
                     Agregar
                 </Button>
-                <Button kind="secondary">
-                    Regresar
-                </Button>
+  
             </form>
         </>
     )

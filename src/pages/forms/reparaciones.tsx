@@ -67,9 +67,6 @@ export default function ReparacionesForm() {
                 <Button type="submit">
                     Agregar
                 </Button>
-                <Button kind="secondary">
-                    Regresar
-                </Button>
             </form>
 
         </>
