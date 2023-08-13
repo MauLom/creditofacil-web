@@ -3,7 +3,7 @@ import { useStyletron } from 'baseui';
 import Layout from '../components/layout';
 import { Spinner } from "baseui/spinner";
 import { Block } from "baseui/block";
-import TicketProvider from '../context/ticketContext';
+import TicketProvider from '../components/context/ticketContext';
 const Index: React.FC = () => {
   // const [css, theme] = useStyletron();
   const [showSpinner, setShowSpinner] = React.useState(false)

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { ITickets, TicketsContextType } from '../@types/ticket';
+import { ITickets, TicketsContextType } from '../../@types/ticket';
 
 export const TicketContext = React.createContext<TicketsContextType | null>(null);
 

@@ -3,7 +3,7 @@ import { HeadingXSmall, LabelLarge, LabelSmall } from "baseui/typography"
 import dictionary from "./dictionary.json"
 import { Grid, Cell } from "baseui/layout-grid"
 import { Block } from "baseui/block";
-import { Card } from "baseui/card";
+import { Card, StyledBody } from "baseui/card";
 import { Button, SHAPE } from "baseui/button";
 import {
     Modal,
@@ -20,17 +20,21 @@ import CreditoFacilForm from "../../pages/forms/creditofacil";
 import AccesoriosForm from "../../pages/forms/accesorios";
 import OtroForm from "../../pages/forms/otro";
 import ReparacionesForm from "../../pages/forms/reparaciones";
-import { TicketContext } from "../../context/ticketContext";
+import { TicketContext } from "../context/ticketContext";
 import { ButtonGroup } from "baseui/button-group";
 import { Delete, Search } from "baseui/icon";
+import PaymentCashForm from "../paymentsMethods/cashForm";
+import PaymentTpvForm from "../paymentsMethods/tpvForm";
 
 export default function Layout({ changeSpinner }) {
     const [openDoSellModal, setOpenDoSellModal] = React.useState(false)
+    const [openDoCobroModal, setOpenDoCobroModal] = React.useState(false)
     const [isOpenDrawer, setIsOpenDrawer] = React.useState(false)
     const [formToBeRendered, setFormToBeRendered] = React.useState()
     const [moment, setMoment] = React.useState<Date>()
     const [dataTable, setDataTable] = React.useState([])
-    const [total, setTotal]= React.useState(0)
+    const [total, setTotal] = React.useState(0)
+    const [toggleCashTpv, setToggelCashTpv] = React.useState(false)
     const ticketsContext = React.useContext(TicketContext)
     const CRUDE_OBJ = {
         venue: "Arteaga",
@@ -46,7 +50,6 @@ export default function Layout({ changeSpinner }) {
         { text: "Otros", module: <OtroForm doClose={closeDrawer} /> }
     ]
 
-
     const COLUMNS = ['Tipo venta', 'Monto', 'Ref/Tag/Concepto', 'Acciones'];
 
     function close() {
@@ -55,13 +58,26 @@ export default function Layout({ changeSpinner }) {
     function closeDrawer() {
         setIsOpenDrawer(false);
     }
+    function handleCobroModal() {
+        setOpenDoCobroModal(!openDoCobroModal)
+    }
     function renderForm(module) {
         setIsOpenDrawer(true)
         setFormToBeRendered(module)
     }
+
+
+    function doCobrar() {
+
+    }
+
     const override_buttonsSize = {
         BaseButton: { style: { width: "50%", margin: "3px" } }
     }
+    const override_card = {
+        Contents: { style: { display: "flex", justifyContent: "space-between" } }
+    }
+
 
 
     React.useEffect(() => {
@@ -177,7 +193,7 @@ export default function Layout({ changeSpinner }) {
             </Cell>
             <Cell gridColumns={2}>
                 <Block style={{ display: "flex", justifyContent: "space-around" }}>
-                    <Button disabled>
+                    <Button onClick={handleCobroModal}>
                         Cobrar
                     </Button>
                     <Button disabled>
@@ -210,6 +226,33 @@ export default function Layout({ changeSpinner }) {
                 </ModalBody>
                 <ModalFooter>
                     <ModalButton kind="tertiary" onClick={close}>
+                        Ir atras
+                    </ModalButton>
+                    {/* <ModalButton onClick={close}>Okay</ModalButton> */}
+                </ModalFooter>
+            </Modal>
+
+            <Modal onClose={handleCobroModal} isOpen={openDoCobroModal}>
+                <ModalHeader>
+                    Total a cobrar: ${total}
+                </ModalHeader>
+                <ModalBody>
+                    <Card overrides={override_card}>
+                        <StyledBody>
+                            <Button onClick={() => { setToggelCashTpv(true) }} disabled={toggleCashTpv}>
+                                Cobro en efectivo
+                            </Button>
+                            <Button onClick={() => { setToggelCashTpv(false) }} disabled={!toggleCashTpv}>
+                                Cobro en terminal
+                            </Button>
+                        </StyledBody>
+                        {toggleCashTpv ? <PaymentCashForm total={total} /> : <PaymentTpvForm />}
+                        <Button>Cobrar</Button>
+
+                    </Card>
+                </ModalBody>
+                <ModalFooter>
+                    <ModalButton kind="tertiary" onClick={handleCobroModal}>
                         Ir atras
                     </ModalButton>
                     {/* <ModalButton onClick={close}>Okay</ModalButton> */}

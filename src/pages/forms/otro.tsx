@@ -3,7 +3,7 @@ import { Button } from "baseui/button";
 import { FormControl } from "baseui/form-control";
 import { Input } from "baseui/input";
 import { HeadingXSmall } from "baseui/typography";
-import { TicketContext } from "../../context/ticketContext";
+import { TicketContext } from "../../components/context/ticketContext";
 import { ITickets } from "../../@types/ticket";
 export default function OtroForm({doClose}) {
     const ticketContext = React.useContext(TicketContext)
