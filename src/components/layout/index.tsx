@@ -26,7 +26,6 @@ import { Delete, Search } from "baseui/icon";
 import PaymentCashForm from "../paymentsMethods/cashForm";
 import PaymentTpvForm from "../paymentsMethods/tpvForm";
 import { useSession, signIn, signOut } from "next-auth/react"
-import { getUsers } from "../../pages/api/users/users";
 export default function Layout({ changeSpinner }) {
     const { data: session } = useSession()
     const [openDoSellModal, setOpenDoSellModal] = React.useState(false)
