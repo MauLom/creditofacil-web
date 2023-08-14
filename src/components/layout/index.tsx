@@ -25,8 +25,10 @@ import { ButtonGroup } from "baseui/button-group";
 import { Delete, Search } from "baseui/icon";
 import PaymentCashForm from "../paymentsMethods/cashForm";
 import PaymentTpvForm from "../paymentsMethods/tpvForm";
-
+import { useSession, signIn, signOut } from "next-auth/react"
+import { getUsers } from "../../pages/api/users/users";
 export default function Layout({ changeSpinner }) {
+    const { data: session } = useSession()
     const [openDoSellModal, setOpenDoSellModal] = React.useState(false)
     const [openDoCobroModal, setOpenDoCobroModal] = React.useState(false)
     const [isOpenDrawer, setIsOpenDrawer] = React.useState(false)
@@ -65,10 +67,23 @@ export default function Layout({ changeSpinner }) {
         setIsOpenDrawer(true)
         setFormToBeRendered(module)
     }
+    function renderSession() {
+        if (session) {
+            return (
+                <Card>
+                    <LabelLarge> {dictionary.venue_prefix}</LabelLarge>
+                    <LabelSmall>{CRUDE_OBJ.venue}</LabelSmall>
 
-
-    function doCobrar() {
-
+                    <LabelLarge> {dictionary.user_prefix} </LabelLarge>
+                    <LabelSmall>{CRUDE_OBJ.userName}</LabelSmall>
+                </Card>
+            )
+        } else {
+            return (<Card>
+                <HeadingXSmall color="red">Estas desconectado cualquier accion es con informacion demo</HeadingXSmall>
+                <Button onClick={()=>{signIn()}}>Iniciar Sesion</Button>
+            </Card>)
+        }
     }
 
     const override_buttonsSize = {
@@ -146,16 +161,12 @@ export default function Layout({ changeSpinner }) {
         setTotal(newCalc)
     }, [ticketsContext, dataTable])
 
+    //console.log("GetUsers?", getUsers())
+
     return (
         <Grid>
             <Cell gridColumns={2}>
-                <Card>
-                    <LabelLarge> {dictionary.venue_prefix}</LabelLarge>
-                    <LabelSmall>{CRUDE_OBJ.venue}</LabelSmall>
-
-                    <LabelLarge> {dictionary.user_prefix} </LabelLarge>
-                    <LabelSmall>{CRUDE_OBJ.userName}</LabelSmall>
-                </Card>
+                {renderSession()}
             </Cell>
             <Cell gridColumns={2} >
                 <Card>
