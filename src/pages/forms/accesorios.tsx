@@ -21,7 +21,6 @@ export default function AccesoriosForm({doClose}) {
         ticketContext.saveTicket(newTicket)
         doClose()
     }
-
     return (
         <>
             <HeadingXSmall>Agregar pago Accesorios</HeadingXSmall>

@@ -26,10 +26,14 @@ import { Delete, Search } from "baseui/icon";
 import PaymentCashForm from "../paymentsMethods/cashForm";
 import PaymentTpvForm from "../paymentsMethods/tpvForm";
 import { useSession, signIn, signOut } from "next-auth/react"
+import SalesTable from "../sales/salesTable";
+import MoneyOuts from "../moneyMovements/moneyOuts";
 export default function Layout({ changeSpinner }) {
     const { data: session } = useSession()
     const [openDoSellModal, setOpenDoSellModal] = React.useState(false)
     const [openDoCobroModal, setOpenDoCobroModal] = React.useState(false)
+    const [openSeeSalesModal, setOpenSeeSalesModal] = React.useState(false)
+    const [openMoneyOutsModal, setOpenMoneyOutsModal] = React.useState(false)
     const [isOpenDrawer, setIsOpenDrawer] = React.useState(false)
     const [formToBeRendered, setFormToBeRendered] = React.useState()
     const [moment, setMoment] = React.useState<Date>()
@@ -80,19 +84,22 @@ export default function Layout({ changeSpinner }) {
         } else {
             return (<Card>
                 <HeadingXSmall color="red">Estas desconectado cualquier accion es con informacion demo</HeadingXSmall>
-                <Button onClick={()=>{signIn()}}>Iniciar Sesion</Button>
+                <Button onClick={() => { signIn() }}>Iniciar Sesion</Button>
             </Card>)
         }
     }
-
+    function handleSeeSalesModal() {
+        setOpenSeeSalesModal(!openSeeSalesModal)
+    }
+    function handleMoneyOutsModal() {
+        setOpenMoneyOutsModal(!openMoneyOutsModal)
+    }
     const override_buttonsSize = {
         BaseButton: { style: { width: "50%", margin: "3px" } }
     }
     const override_card = {
         Contents: { style: { display: "flex", justifyContent: "space-between" } }
     }
-
-
 
     React.useEffect(() => {
         const interval = setInterval(() => {
@@ -101,14 +108,13 @@ export default function Layout({ changeSpinner }) {
 
         return () => clearInterval(interval);
 
-    }, [])
+    }, [moment])
 
     React.useEffect(() => {
         moment == undefined ? changeSpinner(true) : changeSpinner(false)
     }, [moment, changeSpinner])
 
     React.useEffect(() => {
-
         const doUpdate = () => {
             let newTicketsReadables = []
             ticketsContext.tickets.forEach((eachTicket, idx) => {
@@ -158,9 +164,7 @@ export default function Layout({ changeSpinner }) {
         })
         setDataTable(newTicketsReadables)
         setTotal(newCalc)
-    }, [ticketsContext, dataTable])
-
-    //console.log("GetUsers?", getUsers())
+    }, [ticketsContext])
 
     return (
         <Grid>
@@ -170,7 +174,6 @@ export default function Layout({ changeSpinner }) {
             <Cell gridColumns={2} >
                 <Card>
                     {`${moment?.toLocaleDateString()}-${moment?.toLocaleTimeString()}`}
-
                 </Card>
             </Cell>
             <Cell gridColumns={1}>
@@ -178,10 +181,10 @@ export default function Layout({ changeSpinner }) {
                     <Button onClick={() => setOpenDoSellModal(true)}>
                         {`${dictionary.do_sell}`}
                     </Button>
-                    <Button disabled>
+                    <Button onClick={() => { setOpenSeeSalesModal(true) }}>
                         {`${dictionary.see_sales}`}
                     </Button>
-                    <Button disabled>
+                    <Button onClick={()=>{setOpenMoneyOutsModal(true)}}>
                         {`${dictionary.cash_out}`}
                     </Button>
                 </Block>
@@ -263,6 +266,31 @@ export default function Layout({ changeSpinner }) {
                 </ModalBody>
                 <ModalFooter>
                     <ModalButton kind="tertiary" onClick={handleCobroModal}>
+                        Ir atras
+                    </ModalButton>
+                    {/* <ModalButton onClick={close}>Okay</ModalButton> */}
+                </ModalFooter>
+            </Modal>
+
+            <Modal onClose={handleSeeSalesModal} isOpen={openSeeSalesModal}>
+                <ModalHeader> Ventas realizadas</ModalHeader>
+                <ModalBody style={{ textAlign: "center" }}>
+                    <SalesTable />
+                </ModalBody>
+                <ModalFooter>
+                    <ModalButton kind="tertiary" onClick={handleSeeSalesModal}>
+                        Ir atras
+                    </ModalButton>
+                    {/* <ModalButton onClick={close}>Okay</ModalButton> */}
+                </ModalFooter>
+            </Modal>
+            <Modal onClose={handleMoneyOutsModal} isOpen={openMoneyOutsModal}>
+                <ModalHeader>Salidas de dinero</ModalHeader>
+                <ModalBody style={{ textAlign: "center" }}>
+                    <MoneyOuts />
+                </ModalBody>
+                <ModalFooter>
+                    <ModalButton kind="tertiary" onClick={handleMoneyOutsModal}>
                         Ir atras
                     </ModalButton>
                     {/* <ModalButton onClick={close}>Okay</ModalButton> */}

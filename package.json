@@ -15,6 +15,7 @@
     "@types/react": "^18.2.0",
     "@vitejs/plugin-react-swc": "^3.3.0",
     "baseui": "^12.2.0",
+    "crypto-js": "^4.1.1",
     "eslint-config-next": "^13.3.1",
     "eslint-config-prettier": "^8.8.0",
     "mongodb": "^5.7.0",

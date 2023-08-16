@@ -9,7 +9,6 @@ import { ITickets } from "../../@types/ticket";
 export default function CreditoFacilForm({doClose}) {
     const [value, setValue] = React.useState<Value>([]);
     const ticketContext = React.useContext(TicketContext)
-
     const doSubmit = (e) => {
         e.preventDefault()
         const newTicket: ITickets ={
@@ -25,7 +24,6 @@ export default function CreditoFacilForm({doClose}) {
         ticketContext.saveTicket(newTicket)
         doClose()
     }
-
     return (
         <>
             <HeadingXSmall>Agregar pago Celulares credito facil</HeadingXSmall>
